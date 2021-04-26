@@ -38,23 +38,41 @@ gzip -d *gz   #解压缩
 
 ############Index#############
 mkdir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
+#########################
+#########index.sh########
+#########################
+touch index.sh
+vim index.sh ###进入编辑页面 
+
+#!/bin/bash -l
+
+#SBATCH -A sens2019581
+#SBATCH -p core
+#SBATCH -n 16
+#SBATCH -t 01:00:00
+#SBATCH -J construct index for reference
+
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
 module load bioinfo-tools 
 module load star
-#建立index#
-star --runMode genomeGenerate --runThreadN 6 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index --genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa --sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf
+STAR --runThreadN 4 \
+--runMode genomeGenerate \
+--genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index \
+--genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa \
+--sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf \
+--sjdbOverhang 99
+
+#####1.要退出插入模式回到普通模式，按下键盘上的退出键（ESC键);2.要进入命令行模式，在普通模式下按下冒号键;3.wq:将缓冲区数据保存到文件中并退出
+sbatch /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index/index.sh
+
+module load bioinfo-tools 
+module load star
+
+cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
+star --runMode genomeGenerate --runThreadN 2 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index --genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa --sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf
 
 
 
-
-#########################
-#########.sh########
-#########################
-touch index.sh
-vim index.sh ###进入编辑页面
-
-#!/bin/bash
-#construct index for reference
 
 
 
