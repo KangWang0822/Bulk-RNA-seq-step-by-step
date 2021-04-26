@@ -21,3 +21,46 @@ for i in /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcri
 do 
 fastqc $i -o /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/fastqc/ 
 done
+
+###########Accessing reference genome and genome annotation file########
+mkdir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference
+####Transfer reference files (.fastq and .gtf ) http://www.ensembl.org/info/data/ftp/index.html######
+sftp -q kangwang-sens2019581@bianca-sftp.uppmax.uu.se  ###本地终端键入+密码
+cd kangwang-sens2019581
+lls ###本地文件
+put Homo_sapiens.GRCh38.dna.alt.fa.gz  #上传
+put Homo_sapiens.GRCh38.103.gtf.gz  #上传
+ls  ###Bianca文
+cd kangwang-sens2019581/transcriptome/fastqc
+mget *.html          #下载fastaq结果
+#######把注释文件放入 reference#### 
+gzip -d *gz   #解压缩
+
+############Index#############
+mkdir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
+cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
+module load bioinfo-tools 
+module load star
+#建立index#
+star --runMode genomeGenerate --runThreadN 6 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index --genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa --sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf
+
+
+
+
+#########################
+#########.sh########
+#########################
+touch index.sh
+vim index.sh ###进入编辑页面
+
+#!/bin/bash
+#construct index for reference
+
+
+
+
+
+
+
+
+
