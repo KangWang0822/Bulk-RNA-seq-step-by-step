@@ -48,9 +48,9 @@ vim index.sh ###进入编辑页面
 
 #SBATCH -A sens2019581
 #SBATCH -p core
-#SBATCH -n 16
+#SBATCH -n 4
 #SBATCH -t 01:00:00
-#SBATCH -J construct index for reference
+#SBATCH -J star
 
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
 module load bioinfo-tools 
@@ -71,7 +71,9 @@ module load star
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
 star --runMode genomeGenerate --runThreadN 2 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index --genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa --sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf
 
-
+#####Sym-link STAR index to for the entire genome into the transcriptome directory######
+cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/
+ln -s /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome
 
 
 
