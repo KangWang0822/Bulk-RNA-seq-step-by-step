@@ -45,6 +45,7 @@ mkdir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcripto
 #########################
 touch index.sh
 vim index.sh ###进入编辑页面 
+#参考基因组见Bianca的目录里 /sw/data/igenomes/Homo_sapiens/..
 
 #!/bin/bash -l
 
@@ -60,8 +61,8 @@ module load star
 STAR --runThreadN 4 \
 --runMode genomeGenerate \
 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index \
---genomeFastaFiles /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.dna.alt.fa \
---sjdbGTFfile /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/reference/Homo_sapiens.GRCh38.103.gtf \
+--genomeFastaFiles /sw/data/igenomes/Homo_sapiens/Ensembl/GRCh37/Sequence/WholeGenomeFasta/genome.fa \
+--sjdbGTFfile /sw/data/igenomes/Homo_sapiens/Ensembl/GRCh37/Annotation/Genes/genes.gtf \
 --sjdbOverhang 99
 
 #####1.要退出插入模式回到普通模式，按下键盘上的退出键（ESC键);2.要进入命令行模式，在普通模式下按下冒号键;3.wq:将缓冲区数据保存到文件中并退出
