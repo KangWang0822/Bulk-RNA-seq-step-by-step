@@ -5,6 +5,8 @@ mkdir transcriptome/DATA
 
 #Sym-link the .fastq.gz files located in
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/
+
+for i in
 for i in /proj/sens2019581/delivery04273/INBOX/P18362/P18362_131/02-FASTQ/210122_A00187_0419_AHNKKTDSXY/*
 do ln -s $i   #创建数据链接 ln
 done
