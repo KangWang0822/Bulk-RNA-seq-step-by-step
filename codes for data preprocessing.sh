@@ -84,7 +84,7 @@ vim mapping.sh ###进入编辑页面
 #SBATCH -n 8
 #SBATCH -t 01:00:00
 #SBATCH -J star
-cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star
+cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131
 module load bioinfo-tools 
 module load star
 
