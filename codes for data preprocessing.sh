@@ -88,7 +88,7 @@ module load bioinfo-tools
 module load star
 
 STAR --runThreadN 6 \ 
---genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index \
+--genomeDir /sw/data/igenomes/Homo_sapiens/UCSC/hg38/Sequence/STARIndex \
 --readFilesIn /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R1_001.fastq.gz /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R2_001.fastq.gz \
 --readFilesCommand zcat 
 --outFileNamePrefix /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131/P131_
