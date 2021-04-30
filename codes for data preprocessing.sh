@@ -79,19 +79,22 @@ vim mapping.sh ###进入编辑页面
 
 #!/bin/bash -l
 #SBATCH -A sens2019581
-#SBATCH -p node
-#SBATCH -n 32
+#SBATCH -p core
+#SBATCH -n 6
 #SBATCH -t 24:00:00
 #SBATCH -J star
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131
 module load bioinfo-tools 
 module load star
 
-STAR --runThreadN 8 \ 
+STAR --runThreadN 6 \ 
 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index \
---readFilesIn /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R1_001.fastq.gz /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R2_001.fastq.gz 
+--readFilesIn /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/
 --readFilesCommand zcat 
 --outFileNamePrefix /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131/P131_
+--outSAMtype BAM SortedByCoordinate \
+--outSAMunmapped Within \
+--outSAMattributes Standard
 #########################
 #########################
 
