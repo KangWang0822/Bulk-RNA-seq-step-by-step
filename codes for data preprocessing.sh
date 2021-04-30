@@ -48,17 +48,16 @@ vim index.sh ###进入编辑页面
 #参考基因组见Bianca的目录里 /sw/data/igenomes/Homo_sapiens/..
 
 #!/bin/bash -l
-
 #SBATCH -A sens2019581
-#SBATCH -p core
-#SBATCH -n 4
-#SBATCH -t 01:00:00
+#SBATCH -p node
+#SBATCH -n 32
+#SBATCH -t 24:00:00
 #SBATCH -J star
 
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index
 module load bioinfo-tools 
 module load star
-STAR --runThreadN 4 \
+STAR --runThreadN 6 \
 --runMode genomeGenerate \
 --genomeDir /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/index \
 --genomeFastaFiles /sw/data/igenomes/Homo_sapiens/Ensembl/GRCh37/Sequence/WholeGenomeFasta/genome.fa \
