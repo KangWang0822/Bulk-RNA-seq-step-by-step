@@ -19,9 +19,7 @@ cd fastqc
 module load bioinfo-tools 
 module load FastQC
 
-for i in /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/* 
-do 
-fastqc $i -o /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/fastqc/ 
+for i in /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/* do fastqc $i -o /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/fastqc/ 
 done
 
 ###########Accessing reference genome and genome annotation file########
@@ -99,9 +97,27 @@ STAR --runThreadN 6 \
 #########################
 --readFilesIn /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R1_001.fastq.gz /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R2_001.fastq.gz \
 
+chmod 777 /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/*.fastq.gz
+cat >mapping.sh
+#!/bin/bash -l
+#SBATCH -A sens2019581
+#SBATCH -p core 
+#SBATCH -n 6
+#SBATCH -t 24:00:00
+#SBATCH -J star
+cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131
+module load bioinfo-tools 
+module load star
 
-
-
+STAR --runThreadN 6 \
+--runMode alignReads
+--genomeDir /sw/data/igenomes/Homo_sapiens/UCSC/hg38/Sequence/STARIndex \
+--readFilesIn /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R1_001.fastq.gz /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/DATA/P18362_131_S31_L002_R2_001.fastq.gz \ 
+--readFilesCommand zcat
+--outFileNamePrefix /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581/transcriptome/star/P131/P131_
+--outSAMtype BAM SortedByCoordinate \
+--outSAMunmapped Within \
+--outSAMattributes Standard
 
 
 
