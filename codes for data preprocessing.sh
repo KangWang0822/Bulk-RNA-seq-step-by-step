@@ -1,3 +1,8 @@
+######Pipeline Next-flow#####
+nextflow run nf-core/rnaseq -profile uppmax
+
+
+
 #create a working directory named transcriptome and link the raw sequencing files .fastq.gz
 cd /proj/sens2019581/nobackup/wharf/kangwang/kangwang-sens2019581
 mkdir transcriptome
