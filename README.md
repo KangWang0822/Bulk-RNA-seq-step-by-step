@@ -9,7 +9,7 @@ Guided by https://scilifelab.github.io/courses/ngsintro/1805/labs/rnaseq_161129.
 5.count the reads overlapping with genes regions using featureCounts.
 6.build statistical model to find DE genes using edgeR from a prepared R script.
 
-#Latest NGI courses for rnaseq
+# Latest NGI courses for rnaseq
 
 Guided by https://nbisweden.github.io/workshop-ngsintro/2105/lab_rnaseq.html
 
