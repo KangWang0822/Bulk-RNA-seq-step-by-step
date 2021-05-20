@@ -51,15 +51,100 @@ hisat2-build \
 cd /proj/g2021013/nobackup/kangwang/rnaseq/3_mapping
 ln -s ../1_raw/* .
 
-#hisat2 \
-#-p 1 \
-#-x ../reference/mouse_chr19_hisat2/mouse_chr19_hisat2 \       #-x denotes the full path (with prefix) to the aligner index we built in the previous step
-#--summary-file "SRR3222409-19.summary" \
-#-1 SRR3222409-19_1.fq.gz \
-#-2 SRR3222409-19_2.fq.gz \
-#-S SRR3222409-19.sam
+cd /proj/g2021013/nobackup/kangwang/rnaseq/scripts
+cat >hisat2_align.sh
 
+#!/bin/bash
+module load bioinfo-tools
+module load HISAT2/2.1.0
+module load samtools/1.8
+# get output filename prefix
+prefix=$( basename $1 | sed -E 's/_.+$//' )
+hisat2 \
+-p 1 \
+-x ../reference/mouse_chr19_hisat2/mouse_chr19_hisat2 \
+--summary-file "${prefix}.summary" \
+-1 $1 \
+-2 $2 | samtools sort -O BAM > "${prefix}.bam"
 
+ 
+cd /proj/g2021013/nobackup/kangwang/rnaseq/scripts
+cat >hisat2_align_batch.sh
 
+## find only files for read 1 and extract the sample name
+lines=$(find *_1.fq.gz | sed "s/_1.fq.gz//")
+for i in ${lines}
+do
+  ## use the sample name and add suffix (_1.fq.gz or _2.fq.gz)
+  echo "Mapping ${i}_1.fq.gz and ${i}_2.fq.gz ..."
+  bash ../scripts/hisat2_align.sh ${i}_1.fq.gz ${i}_2.fq.gz
+done
 
+cd /proj/g2021013/nobackup/kangwang/rnaseq/3_mapping
+bash ../scripts/hisat2_align_batch.sh
 
+#Index all BAM files#
+module load samtools/1.8
+for i in *.bam
+  do
+    echo "Indexing $i ..."
+    samtools index $i
+  done
+  
+######Post-alignment QC using QualiMap########
+cd /proj/g2021013/nobackup/kangwang/rnaseq/scripts
+cat >qualimap.sh
+
+#!/bin/bash
+# load modules
+module load bioinfo-tools
+module load QualiMap/2.2.1
+# get output filename prefix
+prefix=$( basename "$1" .bam)
+unset DISPLAY
+qualimap rnaseq -pe \
+  -bam $1 \
+  -gtf "../reference/Mus_musculus.GRCm38.99-19.gtf" \
+  -outdir "../4_qualimap/${prefix}/" \
+  -outfile "$prefix" \
+  -outformat "HTML" \
+  --java-mem-size=6G >& "${prefix}-qualimap.log"
+
+cat >qualimap_batch.sh
+for i in ../3_mapping/*.bam
+do
+    echo "Running QualiMap on $i ..."
+    bash ../scripts/qualimap.sh $i
+done
+
+cd /proj/g2021013/nobackup/kangwang/rnaseq/4_qualimap
+sh qualimap.sh
+####Counting mapped reads using featureCounts########
+cd /proj/g2021013/nobackup/kangwang/rnaseq/scripts
+cat >featurecounts.sh
+
+#!/bin/bash
+# load modules
+module load bioinfo-tools
+module load subread/2.0.0
+featureCounts \
+  -a "../reference/Mus_musculus.GRCm38.99.gtf" \
+  -o "counts.txt" \
+  -F "GTF" \
+  -t "exon" \
+  -g "gene_id" \
+  -p \
+  -s 0 \
+  -T 1 \
+  ../3_mapping/*.bam
+  
+cd /proj/g2021013/nobackup/kangwang/rnaseq/5_dge
+bash ../scripts/featurecounts.sh
+
+#########Combined QC report using MultiQC#############
+cd /proj/g2021013/nobackup/kangwang/rnaseq/6_multiqc
+module load bioinfo-tools
+module load MultiQC/1.8
+multiqc --interactive ../
+#登录本地终端#
+scp kangwang@rackham.uppmax.uu.se:/proj/g2021013/nobackup/kangwang/rnaseq/6_multiqc/multiqc_report.html ./
